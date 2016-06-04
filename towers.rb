@@ -1,38 +1,44 @@
 class TowerOfHanoi
+  # Towers modeled as array of arrays, external array : towers , internal arrays : disks
+  # Inital state : [[3, 2, 1], [], []]
   def initialize(height)
-    tower1 = (1..height).to_a.reverse
-    tower2 = []
-    tower3 = []
-    @towers = [tower1, tower2, tower3]
+    @towers = [(1..height).to_a.reverse, [], []]
     @height = height
   end
 
+  # rubocop:disable Metrics/AbcSize
   def render
     level = @height - 1
     while level >= 0
-      s0 = ' ' * (@height - @towers[0][level].to_i)
-      t0 = '=' * @towers[0][level].to_i
-      s1 = ' ' * (@height - @towers[1][level].to_i)
-      t1 = '=' * @towers[1][level].to_i
-      s2 = ' ' * (@height - @towers[2][level].to_i)
-      t2 = '=' * @towers[2][level].to_i
-      puts "#{s0}#{t0}|#{t0}#{s0}#{s1}#{t1}|#{t1}#{s1}#{s2}#{t2}|#{t2}#{s2}"
+      (0..2).each do |i|
+        print ' ' * (@height - @towers[i][level].to_i)
+        print '=' * @towers[i][level].to_i
+        print '|'
+        print '=' * @towers[i][level].to_i
+        print ' ' * (@height - @towers[i][level].to_i)
+      end
+      puts
       level -= 1
     end
-    footer0 = "-" * @height + "0" + "-" * @height
-    footer1 = "-" * @height + "1" + "-" * @height
-    footer2 = "-" * @height + "2" + "-" * @height
-    puts "#{footer0}#{footer1}#{footer2}"
+    (0..2).each { |i| print "-" * @height + i.to_s + "-" * @height }
+    puts
   end
 
   def play
+    # Welcome message with Instructions
     welcome_msg
-    from = 0
-    to   = 0
+
+    # Game loop
     loop do
       puts "Enter Move >"
+
+      # input validation
       from, to = validate_input
+
+      # move disks from one tower to another
       move(from, to)
+
+      # render the state of the towers visually
       render
     end
   end
