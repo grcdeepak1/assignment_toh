@@ -22,6 +22,8 @@ class TowerOfHanoi
     end
     (0..2).each { |i| print "-" * @height + i.to_s + "-" * @height }
     puts
+
+    exit if check_winner
   end
 
   def play
@@ -81,6 +83,13 @@ class TowerOfHanoi
       end
     end
     [from, to]
+  end
+
+  def check_winner
+    if @towers[2] == (1..@height).to_a.reverse
+      puts "Congratulations, You Won!"
+      return true
+    end
   end
 end
 
